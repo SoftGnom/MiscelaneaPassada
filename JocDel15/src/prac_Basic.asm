@@ -176,25 +176,8 @@ getch endp
 posCurScreen proc
     push ebp
 	mov  ebp, esp
-	Push_all
-	mov eax, [row]
-	dec eax
-	shl eax, 1
-	mov ebx, [rowScreenIni]
-	add eax, ebx
 
-	mov ecx, 0
-	mov cl, [col]
-	sub cl, 'A'
-	shl cl, 2
-	mov edx, [colScreenIni]
-	add edx, ecx
 
-	mov [rowScreen], eax
-	mov [colScreen], edx
-
-	call gotoxy
-	Pop_all
 	mov esp, ebp
 	pop ebp
 	ret
@@ -215,19 +198,8 @@ posCurScreen endp
 getMove proc
    push ebp
    mov  ebp, esp
-   Push_all
-getMovebucle:
-	call getch
-	cmp [carac2], 's'
-	je getMovefinal
-	cmp [carac2], ' '
-	je getMovefinal
-	cmp [carac2], 'i'
-	jl getMovebucle
-	cmp [carac2], 'm'
-	jg getMovebucle
-getMovefinal:
-	Pop_all
+
+
    mov esp, ebp
    pop ebp
    ret
@@ -249,16 +221,8 @@ getMove endp
 calcIndex proc
 	push ebp
 	mov  ebp, esp
-	push_all
-	mov edx, 0
-	mov eax, [row]
-	dec eax
-	shl eax, 2
-	mov dl, [col]
-	sub dl, 'A'
-	add eax, edx
-	mov [indexMat], eax
-	pop_all
+	
+
 	mov esp, ebp
 	pop ebp
 	ret
@@ -285,37 +249,8 @@ calcIndex endp
 moveCursor proc
    push ebp
    mov  ebp, esp 
-   push_all
-   cmp[carac2], 'm'
-   je fi
-   cmp[carac2], 's'
-   je fi
-   cmp[carac2], 'i'
-   je moure_i
-   cmp[carac2], 'j'
-   je moure_j
-   cmp[carac2], 'k'
-   je moure_k
-   cmp[carac2], 'l'
-   je moure_l
-   moure_l: cmp[col], 'D'
-   je fi
-   inc [col]
-   jmp fi
-   moure_i: cmp[row], 1
-   je fi
-   dec [row]
-   jmp fi
-   moure_j: cmp[col], 'A'
-   je fi
-   dec [col]
-   jmp fi
-   moure_k: cmp[row], 4
-   je fi
-   inc [row]
-   jmp fi
-   fi:
-   pop_all
+
+
    mov esp, ebp
    pop ebp
    ret
@@ -335,18 +270,8 @@ moveCursor endp
 moveCursorContinuo proc
 	push ebp
 	mov  ebp, esp
-	push_all
-	crida_moure:
-	call getMove
-	cmp [carac2], 'm'
-	je sortir
-	cmp [carac2], 's'
-	je sortir
-	call moveCursor
-	call posCurScreen
-	jmp crida_moure
-	sortir:
-	pop_all
+
+
 	mov esp, ebp
 	pop ebp
 	ret
@@ -377,70 +302,6 @@ moveCursorContinuo endp
 moveTile proc
 	push ebp
 	mov  ebp, esp
-
-push_all
-mov eax, [row]
-mov ebx, 0
-mov ecx, [rowEmpty]
-mov edx, 0
-mov bl, [col]
-mov dl, [colEmpty]
-
-
-
-sub eax, ecx
-cmp eax, 1
-je comprovacio_diagonal ;(moure amunt)
-cmp eax, -1
-je comprovacio_diagonal ;(moure avall)
-cmp eax, 0
-je comprovacio_horitzontal ;(moure esquerra-dreta)
-jmp fi
-
-comprovacio_diagonal: sub bl, dl
-cmp bl, 0
-je moure
-jmp fi
-
-comprovacio_horitzontal: sub bl, dl
-cmp bl, 1
-je moure
-cmp bl, -1
-je moure
-jmp fi
-
-
-moure: push row
-mov eax, 0
-mov al, col
-push eax
-
-call calcIndex
-mov ESI, [indexMat] ;;guardar index original
-mov [row], ecx ;;assignació de rowEmpty a row
-mov [col], dl ;;...
-call calcIndex
-mov EDI, [indexMat] ;;guardar index buit
-
-call posCurScreen
-mov al, [puzzle+ESI]
-mov [carac], al
-mov [puzzle+ESI] ,' ' ;;posar el buit a la posicio original del vector
-call printch
-mov [puzzle+EDI], al ;;escriure el caracter a la posicio del vector de la buida
-mov [carac], ' '
-
-pop ebx
-mov col, bl
-mov colEmpty, bl
-pop ebx
-mov row, ebx
-mov rowEmpty, ebx
-call posCurScreen
-call printch
-inc moves
-
-fi: pop_all
 
 
 	mov esp, ebp
