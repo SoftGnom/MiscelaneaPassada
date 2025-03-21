@@ -38,13 +38,23 @@ s → Sortir
 
 ### 6. Funcions Principals
 
-📌 main.asm
+📌 main_*.cpp
 
-Aquest fitxer conté el codi principal que inicialitza el joc i gestiona el bucle d'execució.
+Els fitxers main_Basic.cpp, main_Mig.cpp i main_Avançat.cpp són els programes principals que gestionen la interacció de l'usuari i criden les funcions d'Assembly.
 
-📌 prac.asm
+Exemples de crides a subrutines ASM:
 
-Conté subrutines auxiliars utilitzades en diferents nivells del joc, com ara la gestió del tauler i el tractament d’entrades de teclat.
+posCurScreen(): Posiciona el cursor.
+
+getMove(): Llegeix una tecla i valida el moviment.
+
+moveCursor(): Mou el cursor segons la tecla premuda.
+
+moveTile(): Mou una fitxa cap al forat.
+
+playTile(): Implementa el moviment continu de fitxes.
+
+playBlock(): Gestiona el moviment de blocs fins a la victòria.
 
 📌 prac_Basic.asm
 
