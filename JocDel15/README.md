@@ -22,19 +22,7 @@ Arquitectura: Intel x86
 
 Llenguatge: Assembly i C
 
-4. Estructura del Projecte
-
-/ElJocDel15
-│── 📂 src
-│   ├── prac_Basic.asm  (Implementació del nivell bàsic)
-│   ├── prac_Mig.asm  (Implementació del nivell mig)
-│   ├── prac_Avançat.asm  (Implementació del nivell avançat)
-│── .gitignore  (Per excloure fitxers innecessaris del repositori)
-│── README.md  (Guia ràpida del projecte)
-│── Makefile (Opcional, si cal instruccions per compilar)
-│── LICENSE (Opcional, si es vol definir drets d’ús)
-
-5. Instal·lació i Execució
+4. Instal·lació i Execució
 
 Clonar el repositori
 
@@ -44,7 +32,7 @@ Obrir el projecte a Visual Studio
 
 Compilar i executar segons les instruccions del Makefile o de Visual Studio.
 
-6. Controls del Joc
+5. Controls del Joc
 
 i → Moure amunt
 
@@ -58,7 +46,7 @@ m → Moure una fitxa
 
 s → Sortir
 
-8. Consideracions Finals
+6. Consideracions Finals
 
 Aquest projecte forma part d’un treball acadèmic i no inclou materials propietat de la universitat. Per qualsevol dubte sobre l’ús del codi, contacteu amb els autors.
 
