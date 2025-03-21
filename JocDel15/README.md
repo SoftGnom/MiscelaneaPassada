@@ -3,7 +3,7 @@
 
 ### 1. Descripció del Projecte
 
-Aquest projecte implementa una versió del README.md utilitzant el llenguatge Assembly per a l'arquitectura Intel x86. L'objectiu del joc és ordenar les peces dins d'un taulell de 4x4 a partir d'una posició inicial desordenada.
+Aquest projecte implementa una versió utilitzant el llenguatge Assembly per a l'arquitectura Intel x86. L'objectiu del joc és ordenar les peces dins d'un taulell de 4x4 a partir d'una posició inicial desordenada.
 
 ### 2. Objectius
 
@@ -22,17 +22,7 @@ Arquitectura: Intel x86
 
 Llenguatge: Assembly i C
 
-### 4. Instal·lació i Execució
-
-Clonar el repositori
-
-git clone https://github.com/usuari/ElJocDel15.git
-
-Obrir el projecte a Visual Studio
-
-Compilar i executar segons les instruccions del Makefile o de Visual Studio.
-
-### 5. Controls del Joc
+### 4. Controls del Joc
 
 i → Moure amunt
 
@@ -48,5 +38,4 @@ s → Sortir
 
 ### 6. Consideracions Finals
 
-Aquest projecte forma part d’un treball acadèmic i no inclou materials propietat de la universitat. Per qualsevol dubte sobre l’ús del codi, contacteu amb els autors.
-
+Aquest projecte forma part d’un treball acadèmic i no inclou materials propietat de la universitat.
