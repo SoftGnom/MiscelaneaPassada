@@ -1,0 +1,289 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam classAttributeIconSize 0
+
+class Webserver {
+- {static} PORT :int
+- {static} FORMATTER : DateTimeFormatter
+- {static} LOGGER : Logger
++ Webserver()
+}
+
+class SocketThread {
+- insocked : Socked
+- makeRequest(tokens : String[]) : Request
+- makeRequestReader(tokens : String[]) : RequestReader
+- makeRequestArea(tokens : String[]) : RequestArea
+- makeHeaderAnswer() : String
+- makeJsonAnswer(request : Request) : String
++ SocketThread(insocket : Socket)
++ run()
+}
+
+Webserver +-right- SocketThread
+
+class Door {
+- id : String
+- state : DoorState
+- closed : boolean
+- inArea : String
+- outArea : String
++ Door(id : String, inArea : String, outArea : String)
++ processRequest(request : RequestReader)
++ setState(doorState : DoorState)
++ toJson() : JSONObject
++ toString() : String
++ isClosed() :boolean
+- doAction(action : String)
++getId() : String
++getInArea() : String
++getOutArea() : String
++ setClosed(b : boolean)
++ getStateName() : String
+}
+
+Door --> DoorState : "state"
+Door --> Space : fromSpace
+Door --> Space : toSpace
+
+abstract Class DoorState
+{
+- door: Door
+- name: String
++ DoorState(door: Door)
++ getState(): String
++ getDoor() : Door
++ setDoor(setDoor : Door) :
++ getName() : String
++ setName(final String setName) :
++ open():
++ close():
++ lock():
++ unlock():
+}
+
+class Locked {
+- {static} LOGGER : Logger
++ Locked(door : Door)
++ getState(): String
++ open():
++ close():
++ lock():
++ unlock():
+}
+DoorState <|-- Locked
+
+class Unlocked {
+- {static} LOGGER : Logger
++ Unlocked(door : Door)
++ getState(): String
++ open():
++ close():
++ lock():
++ unlock():
+}
+DoorState <|-- Unlocked
+
+class Main {
++ {static} main(args : String)
+}
+
+class Area
+{
+-areId : String
++Adrea(areaId : String)
++getId(): String
++getAllAreasInside(): ArrayList<Area>
++getDoorsGivingAccess(): List<Door>
+
+}
+
+class DirectoryAreas{
+-allAreas : ArrayLists<Area>
+-allDoors : ArrayList<Door>
++makeAreas()
++findAreaById(id : String) : Area
++findDoorById(Id : String) : Door
+getAllDoors() : ArrayList<Door>
+}
+DirectoryAreas --> Area : "rootArea"
+DirectoryAreas --> Door : "Doors"
+
+class Partition{
+areaInside : ArrayList<Area>
++Partition(AreaId : String)
++addPartition(partition : Area)
++getAllAreasInside(): ArrayList<Area>
++getDoorsGivingAccess(): List<Door>
+}
+
+Partition --|> Area
+
+
+class Space{
+-doorsGivingAccess : List<Door>
++Space(areaId : String)
++getDoors() : List<Door>
++getDoorsGivingAccess() : List<Door>
++addDoorsGivingAccess(door : Door)
+}
+
+Space --|> Area
+Space --* Door : "doors"
+
+
+class DirectoryGroup{
+- {static} USERS_LIST : ArrayList<User>;
+- {static} START_YEAR = 2023;
+- {static} START_MONTH: INT
+- {static} START_DAY: INT
+- {static} START_MONTH_ADMIN: INT
+- {static} END_YEAR: INT
+- {static} END_MONTH: INT
+- {static} END_DAY: INT
+- {static} END_YEAR_ADMIN: INT
+- {static} END_MONTH_ADMIN: INT
+- {static} END_DAY_ADMIN: INT
+- {static} START_HOUR: INT
+- {static} START_MINUTE: INT
+- {static} END_HOUR: INT
+- {static} END_MINUTE: INT
+- {static} START_HOUR_MANAGER: INT
+- {static} START_MINUTE_MANAGER: INT
+- {static} END_HOUR_MANAGER: INT
+- {static} END_MINUTE_MANAGER: INT
+- {static} START_HOUR_ADMIN: INT
+- {static} START_MINUTE_ADMIN: INT
+- {static} END_HOUR_ADMIN: INT
+- {static} END_MINUTE_ADMIN: INT
+- LOGGER : Logger
+- allGroups : ArrayList<Group>
+- users : ArrayList<User>
++ makeGroups()
++ findUserByCredential(credential : String) : User
+}
+
+DirectoryGroup --> "*" Group : "grups"
+DirectoryGroup --> "*" User : "users"
+
+class Group {
+  - groupId: String
+  - groupUsers: ArrayList<User>
+  - allAreas: ArrayList<Area>
+  - actions: ArrayList<String>
+  - time: Schedule
+  + Group(groupId: String)
+  + getGroupId(): String
+  + getUsers(): ArrayList<User>
+  + addAtGroup(user: User)
+  + addArea(area: Area)
+  + addAction(action: String)
+  + setSchedule(schedule: Schedule)
+  + isAuthorized(now: LocalDateTime) : boolean
+  + authorizedSpaces(space: String) : boolean
+ }
+
+Group --> User
+
+class Schedule {
+  - {static} LOGGER : Logger
+  - startDate: LocalDate
+  - endDate: LocalDate
+  - eligibleDays: ArrayList<DayOfWeek>
+  - startTime: LocalTime
+  - endTime: LocalTime
+  + Schedule()
+  + Schedule(startDate: LocalDate, endDate: LocalDate, startTime: LocalTime, endTime: LocalTime, eligibleDays: ArrayList<DayOfWeek>)
+  + isAuthorized(now: LocalDateTime) : boolean
+}
+
+Schedule --> Group
+
+class User {
+  - name: String
+  - credential: String
+  - group: Group
+  + User(name: String, credential: String, group: Group)
+  + getCredential(): String
+  + getGroup(): Group
+  + toString(): String
+}
+
+User --> Area : "areas"
+
+interface Request{
++answerToJson() : JSONObject
++toString() : String
++process()
+}
+
+class RequestReader {
+  - credential: String
+  - action: String
+  - now: LocalDateTime
+  - doorId: String
+  - userName: String
+  - authorized: boolean
+  - reasons: ArrayList<String>
+  - doorStateName: String
+  - doorClosed: boolean
+  + RequestReader(credential: String, action: String, now: LocalDateTime, doorId: String)
+  + setDoorStateName(name: String)
+  + getAction(): String
+  + isAuthorized(): boolean
+  + addReason(reason: String)
+  + toString(): String
+  + answerToJson(): JSONObject
+  + process()
+  - authorize(user: User, door: Door)
+}
+RequestReader --|> Request
+
+
+class RequestRefresh {
+  - jsonsDoors: ArrayList<JSONObject>
+  + answerToJson(): JSONObject
+  + toString(): String
+  + process(): void
+}
+
+RequestRefresh --|> Request
+
+class RequestArea{
+  - credential: String
+  - action: String
+  - areaId: String
+  - now: LocalDateTime
+  - requests: ArrayList<RequestReader>
+  + RequestArea(credential: String, action: String, now: LocalDateTime, areaId: String)
+  + getAction(): String
+  + answerToJson(): JSONObject
+  + toString(): String
+  + process(): void
+}
+
+RequestArea *-- RequestReader
+
+RequestArea --|> Request
+
+
+class Actions {
+  -LOCK: String
+  -UNLOCK: String
+  -UNLOCK_SHORTLY: String
+  -OPEN: String
+  -CLOSE: String
+}
+
+class States {
+  -LOCK: String
+  -UNLOCK: String
+}
+
+
+Main -[hidden]down- Webserver
+Webserver -[hidden]down- DirectoryDoors
+DirectoryDoors -[hidden]right- DirectoryUsers
+
+@enduml
