@@ -1,4 +1,4 @@
-__authors__ = ['1600861']
+__authors__ = ['XXXXXXX']
 __group__ = 'DL.17'
 
 import numpy as np
